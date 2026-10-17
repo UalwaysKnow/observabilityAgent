@@ -1,4 +1,4 @@
-"""验证干净环境启动、配置优先级与非法配置快速失败。"""
+"""验证应用创建、ASGI 请求及配置；不驱动 lifespan 或真实服务进程。"""
 
 import socket
 from pathlib import Path
@@ -24,14 +24,14 @@ def isolated_environment(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> Non
 
 
 @pytest.mark.anyio
-async def test_starts_without_model_credentials_or_external_services(
+async def test_app_and_health_request_without_external_connections(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
     monkeypatch.delenv("DASHSCOPE_API_KEY", raising=False)
 
     def disallow_connection(*args: Any, **kwargs: Any) -> None:
-        raise AssertionError("启动及存活检查不应建立外部连接")
+        raise AssertionError("应用创建及存活请求不应建立外部连接")
 
     monkeypatch.setattr(socket.socket, "connect", disallow_connection)
     transport = httpx.ASGITransport(app=create_app())
@@ -56,7 +56,7 @@ async def test_environment_overrides_dotenv(
     assert schema["info"]["title"] == "from-environment"
 
 
-def test_invalid_environment_fails_at_startup(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_invalid_environment_fails_at_app_creation(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("OBS_AGENT_ENVIRONMENT", "typo")
 
     with pytest.raises(ValidationError, match="environment"):

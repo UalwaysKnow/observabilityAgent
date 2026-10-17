@@ -18,9 +18,5 @@ jobs:
       - uses: astral-sh/setup-uv@v6
         with:
           version: "0.12.23"
-      - run: uv sync --locked
-      - run: uv run --locked ruff check .
-      - run: uv run --locked ruff format --check .
-      - run: uv run --locked mypy
-      - run: uv run --locked pytest
-      - run: uv build
+      - name: Verify workspace and installed wheel
+        run: ./scripts/verify.sh

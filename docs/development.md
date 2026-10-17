@@ -1,6 +1,6 @@
 # 开发骨架与首个开发提交
 
-首个开发提交的验收目标：新环境能安装锁定依赖，导入已安装的包，启动 HTTP 服务，并通过格式、静态检查、测试和打包检查。
+首个开发提交的验收目标：新环境能安装锁定依赖，导入已安装的包，提供 HTTP 入口，并通过格式、静态检查、应用创建与请求检查和打包检查。现有自动化检查未启动真实 HTTP 进程，也未驱动 lifespan。
 
 建议提交信息：`chore: bootstrap Python project with uv, FastAPI and CI`。
 
@@ -11,9 +11,11 @@
 - 使用 `src/observability_agent/` 放置可安装代码，测试通过安装后的包导入，避免依赖仓库根目录或手工修改 `sys.path`。参见 [PyPA 的 src 布局说明](https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/)。
 - FastAPI 使用应用工厂，初始化在创建应用时发生。当前 `/healthz` 只检查进程可响应，后续外部依赖就绪检查另行设计。
 - `pydantic-settings` 管理进程配置，环境变量覆盖 `.env`；示例配置可提交，实际 `.env` 忽略。模型配置在实现模型适配时加入。
-- Ruff 管理格式与基础静态检查，mypy 检查源码类型，pytest 验证启动与配置行为。CI 运行与本地相同的命令。
+- Ruff 管理格式与基础静态检查，mypy 检查源码类型，pytest 验证应用创建、请求与配置行为。CI 与本地统一调用 `scripts/verify.sh`。
 
 ## 当前目录
+
+以下列出初始骨架；新增协作文件、架构与验证入口见 [协作指南](collaboration/README.md)、[共享工程规范](engineering.md) 和 [架构说明](architecture.md)。
 
 ```text
 observabilityAgent/
@@ -68,6 +70,14 @@ Agent 和 Context 模块不得反向依赖 Evaluator 或读取黄金答案。后
 
 - 已生成 `uv.lock`，使用锁定依赖安装开发环境。
 - Ruff 静态检查与格式检查通过；mypy 对 4 个源码文件的严格类型检查通过。
-- pytest 的 3 项检查通过且无警告：无模型密钥和外部连接时可创建应用并响应健康检查、环境变量覆盖 `.env`、非法环境配置在创建应用时失败。
+- pytest 的 3 项检查通过且无警告：无模型密钥和外部连接时可创建应用并响应健康请求、环境变量覆盖 `.env`、非法环境配置在创建应用时失败。此记录不包含 lifespan、真实 HTTP 进程或外部服务就绪验证。
 - 已构建 sdist 与 wheel，并在仓库之外的隔离环境安装 wheel、成功导入包及创建应用。
 - GitHub Actions 工作流已配置；远端 CI 结果须在后续提交推送后确认。
+
+## 统一验证入口（2026-10-17 起）
+
+执行 `./scripts/verify.sh`。脚本定位自身工作区并锁定依赖，完成 Ruff、mypy、pytest，随后在临时目录构建 sdist/wheel，导出锁定运行依赖，创建隔离环境、安装 wheel 并检查应用工厂。
+
+安装包检查在源码目录之外执行，移除 `PYTHONPATH` 并使用 Python 隔离模式，验证导入文件确实来自新环境的 site-packages。它验证可安装性与应用创建，不模拟服务 lifespan。
+
+验证入口的自动化用例使用假 uv 检查工作区定位、带空格路径、失败退出码、提前停止及工具缺失；真实脚本另行验证打包和安装。事实记录见各任务交接，运行记录不会被写成独立 Review。
