@@ -44,7 +44,9 @@ CC 负责日常开发，Codex 负责关键实现与独立 Review，用户负责�
 - [项目整体规划 v1.0](docs/project-roadmap.md)：当前执行基准，包含 12 周排期、阶段任务、验收标准、实验和开发工具分工。
 - [早期技术方案 v0.2（历史参考）](docs/project-plan.md)：保留早期业务场景、数据来源与技术讨论；冲突内容以整体规划为准。
 - [开发骨架与提交边界](docs/development.md)：工程选择、模块职责与下一步开发顺序。
-- [当前与目标架构](docs/architecture.md)
+- [系统架构设计 v1.0](docs/architecture.md)：总体架构、模块边界、数据流、恢复、上下文与评测；[Word 阅读版](docs/architecture-design-v1.0.docx)。
+- [架构复审记录](docs/architecture-review-2026-10-17.md)：完整性核对、边界歧义与修订建议。
+- [架构讨论原文归档](docs/discussions/2026-10-17-architecture-discussion-verbatim.md)：保留消息原文、时间戳与选项问答。
 - [协作任务索引](docs/collaboration/task-board.md)
 - [架构决策记录](docs/decisions/README.md)
 - [三个月项目规划讨论记录](agent_project_plan_3months.md)
