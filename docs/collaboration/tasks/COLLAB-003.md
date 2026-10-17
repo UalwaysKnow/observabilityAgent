@@ -4,9 +4,10 @@
 - 本轮 Owner / 实际执行者：Codex（用户授权整份方案落地）
 - 角色：implementation
 - 独立 Reviewer：Claude Code（待执行）
-- 状态：IN_PROGRESS
+- 状态：REVIEW
 - 基线：`fcc1c29464b31b5fd6a4758cfb8bf7d1e3b992b4`
-- 工作区 / 分支：当前主仓库工作目录 / main，索引变更待提交
+- 工作区 / 分支：当前主仓库工作目录 / main
+- 实现提交：`cfffc33db7606070b0fccb1bd07f81ec6dd3a068`
 - 依赖：无
 
 ## 范围与验收
@@ -20,4 +21,4 @@
 
 ## 交付与下一步
 
-交接见 [本轮记录](../handoffs/COLLAB-003-working-tree.md)。执行的是 `git rm -r --cached -- .idea`，尚未产生提交；本地 IDE 文件不受删除影响。
+交接见 [本轮记录](../handoffs/COLLAB-003-cfffc33.md)。`git rm -r --cached -- .idea` 的索引变更已提交；本地 IDE 文件保留，CC 独立审查和新工作区核对待执行。

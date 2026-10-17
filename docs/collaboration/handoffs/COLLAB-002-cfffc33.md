@@ -1,9 +1,10 @@
-# COLLAB-002 交接草稿
+# COLLAB-002 实现交接
 
 - 日期：2026-10-17
 - Producer：Codex，implementation
 - Base：`fcc1c29464b31b5fd6a4758cfb8bf7d1e3b992b4`
-- 实现 Head：待提交
+- 实现 Head：`cfffc33db7606070b0fccb1bd07f81ec6dd3a068`
+- 本记录在实现提交后的独立文档提交中绑定版本，不改变被审实现。
 - 任务状态见 [任务卡](../tasks/COLLAB-002.md)
 
 ## 已完成
@@ -21,7 +22,7 @@
 | `.venv/bin/ruff check .` | 本地环境 | PASS |
 | `.venv/bin/ruff format --check .` | 本地环境 | PASS |
 | 完整 `scripts/verify.sh` | 2026-10-17，macOS / Python 3.11.15 / 临时 uv 0.12.23 | PASS，Ruff、mypy、7 项测试、sdist/wheel 构建与隔离安装/应用创建检查全部通过 |
-| CC 独立 Review / 远端 CI | 尚未提交推送 | NOT RUN |
+| CC 独立 Review / 远端 CI | 实现已提交，结果待确认 | NOT RUN |
 
 ## 风险与下一步
 
@@ -35,4 +36,4 @@ PATH="/private/tmp/observability-agent-collab-bootstrap/bin:$PATH" UV_CACHE_DIR=
 
 临时环境可能在后续会话清理；日常应先安装 uv，再直接运行标准入口。完整测试报告为 7 passed；mypy 检查 4 个源码文件；安装检查确认包来自临时环境的 site-packages，检查结束清理脚本自身临时目录。根目录与子目录定位、带空格路径及失败控制由自动化用例验证；本轮完整真实脚本从主工作区根目录运行。
 
-提交实现 SHA 后交给 CC 独立 Review，推送后确认远端 CI。
+按上述实现 SHA 交给 CC 独立 Review，推送后确认远端 CI。
